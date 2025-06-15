@@ -10,8 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://lxvf5pcj74a2" path="res://assets/Miedieval Warrior Pack 2/Medieval Warrior Pack 2/Sprites/Jump.png" id="5_dw050"]
 [ext_resource type="Texture2D" uid="uid://fal33ag0q5h0" path="res://assets/Miedieval Warrior Pack 2/Medieval Warrior Pack 2/Sprites/Take Hit - white silhouette.png" id="9_b26j0"]
 [ext_resource type="Script" uid="uid://vnlhhw4wv2gc" path="res://progress_bar.gd" id="10_n7ghd"]
-[ext_resource type="Texture2D" uid="uid://di07hv4ggnent" path="res://assets/Healthbar/healthbarUnder.png" id="11_urp6f"]
-[ext_resource type="Texture2D" uid="uid://c0s4y7d2je265" path="res://assets/Healthbar/healthbarProgress.png" id="12_bwjto"]
+[ext_resource type="Texture2D" uid="uid://dhfg6ovditw56" path="res://assets/Player Healthbar/playerUnder.png" id="11_urp6f"]
+[ext_resource type="Texture2D" uid="uid://ckckauvsib7ht" path="res://assets/Player Healthbar/playerProgress.png" id="12_bwjto"]
 [ext_resource type="Script" uid="uid://dlu3oddpgfckc" path="res://texture_progress_bar.gd" id="13_606se"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_onrkg"]
@@ -365,7 +365,7 @@ offset_left = 32.0
 offset_top = 309.0
 offset_right = 96.0
 offset_bottom = 319.0
-scale = Vector2(1.5, 1)
+scale = Vector2(2, 1.333)
 texture_under = ExtResource("11_urp6f")
 texture_progress = ExtResource("12_bwjto")
 script = ExtResource("13_606se")
