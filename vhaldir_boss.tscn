@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=3 uid="uid://d22puu5djwhvg"]
+[gd_scene load_steps=76 format=3 uid="uid://d22puu5djwhvg"]
 
 [ext_resource type="Texture2D" uid="uid://d0flxmxcxnrv0" path="res://assets/Fantasy Warrior Pack 1/Fantasy Warrior/Attack1.png" id="1_jqkah"]
 [ext_resource type="Script" uid="uid://8umg025il2av" path="res://vhaldir_boss.gd" id="1_u77ea"]
@@ -10,6 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://jstq4pfpc8la" path="res://assets/Fantasy Warrior Pack 1/Fantasy Warrior/Jump.png" id="7_n3raw"]
 [ext_resource type="Texture2D" uid="uid://64y426i8k61d" path="res://assets/Fantasy Warrior Pack 1/Fantasy Warrior/Run.png" id="8_w3ebf"]
 [ext_resource type="Texture2D" uid="uid://dqur2cecb0mnx" path="res://assets/Fantasy Warrior Pack 1/Fantasy Warrior/Take hit.png" id="9_lj0ti"]
+[ext_resource type="Texture2D" uid="uid://di07hv4ggnent" path="res://assets/Healthbar/healthbarUnder.png" id="11_5d5xk"]
+[ext_resource type="Texture2D" uid="uid://c0s4y7d2je265" path="res://assets/Healthbar/healthbarProgress.png" id="12_knfnd"]
+[ext_resource type="Script" uid="uid://cmvxrpeexkrja" path="res://vhaldir_progress_bar.gd" id="13_n3raw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u77ea"]
 size = Vector2(39.6875, 46.875)
@@ -499,5 +502,23 @@ animation = &"attack_1"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.375, 28)
 shape = SubResource("RectangleShape2D_rahvj")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Vhaldir_Progress_Bar" type="TextureProgressBar" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -191.0
+offset_top = 20.0
+offset_right = -127.0
+offset_bottom = 60.0
+grow_horizontal = 2
+scale = Vector2(6, 2)
+max_value = 250.0
+texture_under = ExtResource("11_5d5xk")
+texture_progress = ExtResource("12_knfnd")
+script = ExtResource("13_n3raw")
+boss_node_path = NodePath("../..")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

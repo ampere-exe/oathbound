@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://0ubeoo7okwix"]
+[gd_scene load_steps=64 format=3 uid="uid://0ubeoo7okwix"]
 
 [ext_resource type="Texture2D" uid="uid://cngm484hfbatf" path="res://assets/Miedieval Warrior Pack 1/Medieval Warrior Pack/Attack1.png" id="1_pdtw7"]
 [ext_resource type="Script" uid="uid://bjf1k8l8wv3cb" path="res://thal_boss.gd" id="1_t1gkb"]
@@ -10,6 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://cli5eohytlt3k" path="res://assets/Miedieval Warrior Pack 1/Medieval Warrior Pack/Roll.png" id="7_byiqs"]
 [ext_resource type="Texture2D" uid="uid://daapf03jd42gd" path="res://assets/Miedieval Warrior Pack 1/Medieval Warrior Pack/Slide.png" id="9_wnwtr"]
 [ext_resource type="Texture2D" uid="uid://bkmb7ribc67xu" path="res://assets/Miedieval Warrior Pack 1/Medieval Warrior Pack/Hit.png" id="10_pua24"]
+[ext_resource type="Texture2D" uid="uid://di07hv4ggnent" path="res://assets/Healthbar/healthbarUnder.png" id="11_pua24"]
+[ext_resource type="Texture2D" uid="uid://c0s4y7d2je265" path="res://assets/Healthbar/healthbarProgress.png" id="12_o2hoo"]
+[ext_resource type="Script" uid="uid://bket28mwship4" path="res://thal_progress_bar.gd" id="13_o2hoo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_byiqs"]
 size = Vector2(58.0625, 90.625)
@@ -280,9 +283,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_agrwn")
 }],
-"loop": true,
+"loop": false,
 "name": &"death",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -408,10 +411,30 @@ shape = SubResource("RectangleShape2D_o2hoo")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_3rxsb")
-animation = &"attack_1"
+animation = &"death"
+frame = 8
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 23)
 shape = SubResource("RectangleShape2D_t1imx")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Thal_Progress_Bar" type="TextureProgressBar" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -191.0
+offset_top = 20.0
+offset_right = -127.0
+offset_bottom = 60.0
+grow_horizontal = 2
+scale = Vector2(6, 2)
+max_value = 200.0
+texture_under = ExtResource("11_pua24")
+texture_progress = ExtResource("12_o2hoo")
+script = ExtResource("13_o2hoo")
+boss_node_path = NodePath("../..")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

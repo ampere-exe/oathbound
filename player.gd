@@ -5,7 +5,6 @@ extends CharacterBody2D
 var health := max_health      # Current health for the player
 
 # Signal emitted when health changes.
-# Other nodes can connect to this to update their display (e.g., health bar).
 signal health_changed(current_health: int, max_health: int)
 
 @export var speed := 200
@@ -15,11 +14,11 @@ signal health_changed(current_health: int, max_health: int)
 
 var is_attacking := false
 var is_blocking := false
+var is_dead := false   # New flag to track if player is dead
 
 @onready var sprite := $AnimatedSprite2D
 @onready var sword_hitbox := $Area2D/Sword_Hitbox
 
-# Store the original position to flip later
 var sword_hitbox_offset := Vector2.ZERO
 
 func _ready():
@@ -27,29 +26,35 @@ func _ready():
 	sprite.connect("frame_changed", Callable(self, "_on_frame_changed"))
 	sword_hitbox_offset = sword_hitbox.position
 	
-	# Emit the initial health state when the player is ready
-	# This ensures the health bar is correctly set up from the start
 	emit_signal("health_changed", health, max_health)
 
 func _unhandled_input(event):
+	if is_dead:
+		return  # Ignore input if dead
+
 	if Input.is_action_just_pressed("attack"):
 		is_attacking = true
 		is_blocking = false
 		sprite.play("attack_1", true)
-		# For demonstration: Player takes damage on attack (you can remove this)
-		# You'd typically call take_damage from an enemy or hazard script
-		take_damage(10) 
+		take_damage(10)  # demo damage on attack
 
 	elif Input.is_action_just_pressed("block"):
 		is_blocking = true
 		is_attacking = false
-		sprite.play("block", true)  # true forces restart even if already playing
+		sprite.play("block", true)
 
 func _physics_process(delta):
+	if is_dead:
+		velocity.x = 0  # stop movement if dead
+		apply_gravity(delta)
+		move_character(delta)
+		# Don't update animations after death animation is playing
+		return
+
 	if not is_attacking and not is_blocking:
 		handle_input()
 	else:
-		velocity.x = 0  # stop movement during attack or block
+		velocity.x = 0
 
 	apply_gravity(delta)
 	move_character(delta)
@@ -77,8 +82,8 @@ func move_character(delta):
 	move_and_slide()
 
 func update_animation():
-	if is_attacking or is_blocking:
-		return  # Don't override active attack or block animation
+	if is_attacking or is_blocking or is_dead:
+		return  # Don't override active animations or death animation
 
 	if not is_on_floor():
 		if velocity.y < 0:
@@ -104,6 +109,9 @@ func _on_animation_finished():
 		sword_hitbox.disabled = true
 	elif sprite.animation == "block":
 		is_blocking = false
+	elif sprite.animation == "death":
+		# You could do something here when death animation finishes (e.g., disable player)
+		pass
 
 func _on_frame_changed():
 	if sprite.animation == "attack_1":
@@ -115,13 +123,15 @@ func _on_frame_changed():
 	else:
 		sword_hitbox.disabled = true
 
-# Function to handle taking damage
 func take_damage(amount: int):
-	health = max(0, health - amount) # Ensure health doesn't go below 0
+	if is_dead:
+		return  # No effect if already dead
+
+	health = max(0, health - amount)
 	print("Player took ", amount, " damage. Current health: ", health)
 	emit_signal("health_changed", health, max_health)
 	
 	if health <= 0:
+		is_dead = true
 		print("Player has been defeated!")
-		# queue_free() # remove player on death
-		# get_tree().reload_current_scene() # restart scene on death
+		sprite.play("death", true)

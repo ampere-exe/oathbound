@@ -220,7 +220,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ek41f")
 }],
-"loop": true,
+"loop": false,
 "name": &"death",
 "speed": 10.0
 }, {
@@ -343,9 +343,7 @@ shape = SubResource("RectangleShape2D_b26j0")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["player"]]
 sprite_frames = SubResource("SpriteFrames_pbfsw")
-animation = &"attack_1"
-frame = 3
-frame_progress = 1.0
+animation = &"death"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1.25, 10.25)
@@ -362,12 +360,12 @@ offset_bottom = 322.0
 script = ExtResource("10_n7ghd")
 player_node_path = NodePath("../..")
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="Player_Healthbar"]
+[node name="Player_Progress_Bar" type="TextureProgressBar" parent="Player_Healthbar"]
 offset_left = 32.0
 offset_top = 309.0
 offset_right = 96.0
 offset_bottom = 319.0
-scale = Vector2(3, 2)
+scale = Vector2(1.5, 1)
 texture_under = ExtResource("11_urp6f")
 texture_progress = ExtResource("12_bwjto")
 script = ExtResource("13_606se")

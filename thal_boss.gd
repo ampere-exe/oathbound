@@ -4,9 +4,16 @@ extends CharacterBody2D
 @export var attack_range := 50
 @export var detection_range := 300
 
+# Health management
+@export var max_health := 200
+var health := max_health
+var is_dead := false
+
+# Signal for health changes
+signal health_changed(current_health: int, max_health: int)
+
 var player: Node2D = null
 var is_attacking := false
-var is_dead := false
 
 var attack_timer := 0.0
 var attacks_left := 0  # How many attacks left in this burst
@@ -30,12 +37,14 @@ func _ready():
 	sprite.connect("animation_finished", Callable(self, "_on_AnimatedSprite2D_animation_finished"))
 	sprite.connect("frame_changed", Callable(self, "_on_frame_changed"))
 	reset_attack_burst()
+	
+	# Emit initial health state for healthbar setup
+	emit_signal("health_changed", health, max_health)
 
 func _physics_process(delta):
 	if is_dead or player == null:
 		return
 
-	# Face the player and flip hitbox direction
 	var facing_left = global_position.x > player.global_position.x
 	sprite.flip_h = facing_left
 	area.scale.x = -1 if facing_left else 1
@@ -82,7 +91,7 @@ func start_roll():
 	is_rolling = true
 	roll_timer = roll_duration
 	sprite.play("roll")
-	hurtbox.disabled = true  # <- disable the hurtbox during roll
+	hurtbox.disabled = true
 
 func _on_AnimatedSprite2D_animation_finished():
 	if is_attacking and sprite.animation.begins_with("attack"):
@@ -93,7 +102,10 @@ func _on_AnimatedSprite2D_animation_finished():
 	elif is_rolling and sprite.animation == "roll":
 		is_rolling = false
 		roll_timer = 0
-		hurtbox.disabled = false  # <- re-enable the hurtbox
+		hurtbox.disabled = false
+	elif sprite.animation == "death":
+		# Disable boss or trigger cleanup after death animation
+		queue_free()  # Optional: remove boss from scene
 
 func reset_attack_burst():
 	attacks_left = randi() % 3 + 1
@@ -109,7 +121,22 @@ func _on_frame_changed():
 
 	if anim == "attack_1" and frame >= total - 2:
 		attack1_hitbox.disabled = false
+		take_damage(10)  # Boss takes 10 damage while swinging attack 1
 	elif anim == "attack_2" and frame >= total - 2:
 		attack2_hitbox.disabled = false
 	elif anim == "attack_3" and frame >= total - 2:
 		attack3_hitbox.disabled = false
+
+# Health management
+func take_damage(amount: int):
+	if is_dead:
+		return
+	
+	health = max(0, health - amount)
+	print("Boss took ", amount, " damage. Current health: ", health)
+	emit_signal("health_changed", health, max_health)
+	
+	if health <= 0:
+		is_dead = true
+		print("Boss defeated!")
+		sprite.play("death", true)

@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://dfwe10mg57ova"]
 
-[ext_resource type="Texture2D" uid="uid://cnplxnc6yn0j8" path="res://assets/backgrounds/castle_interior.png" id="1_16pka"]
-[ext_resource type="PackedScene" uid="uid://bsaeqyfcgckla" path="res://player.tscn" id="2_j8bo8"]
-[ext_resource type="PackedScene" uid="uid://d22puu5djwhvg" path="res://vhaldir_boss.tscn" id="3_16pka"]
+[ext_resource type="Texture2D" uid="uid://cnplxnc6yn0j8" path="res://assets/backgrounds/castle_interior.png" id="1_xdadj"]
+[ext_resource type="PackedScene" uid="uid://bsaeqyfcgckla" path="res://player.tscn" id="2_1y8me"]
+[ext_resource type="PackedScene" uid="uid://d22puu5djwhvg" path="res://vhaldir_boss.tscn" id="3_n7ypv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hbghi"]
 size = Vector2(640, 25)
@@ -16,12 +16,12 @@ size = Vector2(22, 359)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rka8t"]
 size = Vector2(639, 20)
 
-[node name="level 1" type="Node2D"]
+[node name="level 2" type="Node2D"]
 
 [node name="TextureRect" type="TextureRect" parent="."]
 offset_right = 640.0
 offset_bottom = 540.0
-texture = ExtResource("1_16pka")
+texture = ExtResource("1_xdadj")
 expand_mode = 1
 stretch_mode = 4
 
@@ -50,8 +50,8 @@ position = Vector2(325, 17)
 position = Vector2(-5, -27)
 shape = SubResource("RectangleShape2D_rka8t")
 
-[node name="Player" parent="." instance=ExtResource("2_j8bo8")]
+[node name="Player" parent="." instance=ExtResource("2_1y8me")]
 position = Vector2(113, 190)
 
-[node name="Vhaldir_Boss" parent="." instance=ExtResource("3_16pka")]
+[node name="Vhaldir_Boss" parent="." instance=ExtResource("3_n7ypv")]
 position = Vector2(453, 163)

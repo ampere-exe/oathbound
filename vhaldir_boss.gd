@@ -7,10 +7,13 @@ extends CharacterBody2D
 @export var detection_range := 300
 @export var jump_chance := 0.05
 @export var jump_cooldown_time := 2.0
+@export var max_health := 250
+var health := max_health
+var is_dead := false
+signal health_changed(current_health: int, max_health: int)
 
 var player: Node2D = null
 var is_attacking := false
-var is_dead := false
 var is_jumping_away := false
 
 var attack_timer := 0.0
@@ -23,6 +26,7 @@ var jump_cooldown := 0.0
 @onready var attack3_hitbox := $Area2D/Attack3_Hitbox
 
 func _ready():
+	emit_signal("health_changed", health, max_health)
 	player = get_tree().get_first_node_in_group("player")
 	randomize()
 	sprite.connect("animation_finished", Callable(self, "_on_animation_finished"))
@@ -122,6 +126,16 @@ func try_jump_away():
 		is_jumping_away = true
 		sprite.play("jump")
 
+func take_damage(amount: int):
+	if is_dead:
+		return
+	health = max(0, health - amount)
+	print("Boss took ", amount, " damage. Current health: ", health)
+	emit_signal("health_changed", health, max_health)
+	if health <= 0:
+		is_dead = true
+		sprite.play("death")
+
 func _on_frame_changed():
 	var anim = sprite.animation
 	var frame = sprite.frame
@@ -132,9 +146,10 @@ func _on_frame_changed():
 	attack3_hitbox.disabled = true
 
 	# Enable based on specific frames
-	if anim == "attack_1" and (frame == 3 or frame == 4):
-		attack1_hitbox.disabled = false
-	elif anim == "attack_2" and (frame == 1 or frame == 2):
-		attack2_hitbox.disabled = false
-	elif anim == "attack_3" and (frame == 3 or frame == 4):
-		attack3_hitbox.disabled = false
+	# TEMPORARY DAMAGE DURING ATTACK SWING
+	if anim == "attack_1" and frame == 3:
+		take_damage(10)
+	elif anim == "attack_2" and frame == 2:
+		take_damage(12)
+	elif anim == "attack_3" and frame == 3:
+		take_damage(15)
