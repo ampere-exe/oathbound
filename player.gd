@@ -1,5 +1,13 @@
 extends CharacterBody2D
 
+# Health Management
+@export var max_health := 100 # Maximum health for the player
+var health := max_health      # Current health for the player
+
+# Signal emitted when health changes.
+# Other nodes can connect to this to update their display (e.g., health bar).
+signal health_changed(current_health: int, max_health: int)
+
 @export var speed := 200
 @export var jump_force := -400
 @export var gravity := 900
@@ -18,12 +26,19 @@ func _ready():
 	sprite.connect("animation_finished", Callable(self, "_on_animation_finished"))
 	sprite.connect("frame_changed", Callable(self, "_on_frame_changed"))
 	sword_hitbox_offset = sword_hitbox.position
+	
+	# Emit the initial health state when the player is ready
+	# This ensures the health bar is correctly set up from the start
+	emit_signal("health_changed", health, max_health)
 
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("attack"):
 		is_attacking = true
 		is_blocking = false
 		sprite.play("attack_1", true)
+		# For demonstration: Player takes damage on attack (you can remove this)
+		# You'd typically call take_damage from an enemy or hazard script
+		take_damage(10) 
 
 	elif Input.is_action_just_pressed("block"):
 		is_blocking = true
@@ -99,3 +114,14 @@ func _on_frame_changed():
 			sword_hitbox.disabled = true
 	else:
 		sword_hitbox.disabled = true
+
+# Function to handle taking damage
+func take_damage(amount: int):
+	health = max(0, health - amount) # Ensure health doesn't go below 0
+	print("Player took ", amount, " damage. Current health: ", health)
+	emit_signal("health_changed", health, max_health)
+	
+	if health <= 0:
+		print("Player has been defeated!")
+		# queue_free() # remove player on death
+		# get_tree().reload_current_scene() # restart scene on death

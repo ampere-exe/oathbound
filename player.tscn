@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://bsaeqyfcgckla"]
+[gd_scene load_steps=55 format=3 uid="uid://bsaeqyfcgckla"]
 
 [ext_resource type="Script" uid="uid://bbcq4q41fvj0e" path="res://player.gd" id="1_i3pqv"]
 [ext_resource type="Texture2D" uid="uid://rlxt30im1k5n" path="res://assets/Miedieval Warrior Pack 2/Medieval Warrior Pack 2/Sprites/Idle.png" id="1_onrkg"]
@@ -9,9 +9,16 @@
 [ext_resource type="Texture2D" uid="uid://dqvce3b20qmmr" path="res://assets/Miedieval Warrior Pack 2/Medieval Warrior Pack 2/Sprites/Death.png" id="4_dw050"]
 [ext_resource type="Texture2D" uid="uid://lxvf5pcj74a2" path="res://assets/Miedieval Warrior Pack 2/Medieval Warrior Pack 2/Sprites/Jump.png" id="5_dw050"]
 [ext_resource type="Texture2D" uid="uid://fal33ag0q5h0" path="res://assets/Miedieval Warrior Pack 2/Medieval Warrior Pack 2/Sprites/Take Hit - white silhouette.png" id="9_b26j0"]
+[ext_resource type="Script" uid="uid://vnlhhw4wv2gc" path="res://progress_bar.gd" id="10_n7ghd"]
+[ext_resource type="Texture2D" uid="uid://di07hv4ggnent" path="res://assets/Healthbar/healthbarUnder.png" id="11_urp6f"]
+[ext_resource type="Texture2D" uid="uid://c0s4y7d2je265" path="res://assets/Healthbar/healthbarProgress.png" id="12_bwjto"]
+[ext_resource type="Script" uid="uid://dlu3oddpgfckc" path="res://texture_progress_bar.gd" id="13_606se"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_onrkg"]
 size = Vector2(39.4444, 37.7778)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b26j0"]
+size = Vector2(23.8889, 38.8889)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pbfsw"]
 atlas = ExtResource("2_2hs0m")
@@ -330,6 +337,10 @@ position = Vector2(33.6111, 11.1111)
 shape = SubResource("RectangleShape2D_onrkg")
 disabled = true
 
+[node name="Hurtbox" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(1.38889, 10)
+shape = SubResource("RectangleShape2D_b26j0")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["player"]]
 sprite_frames = SubResource("SpriteFrames_pbfsw")
 animation = &"attack_1"
@@ -339,3 +350,25 @@ frame_progress = 1.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1.25, 10.25)
 shape = SubResource("RectangleShape2D_2hs0m")
+
+[node name="Player_Healthbar" type="CanvasLayer" parent="."]
+
+[node name="ProgressBar" type="ProgressBar" parent="Player_Healthbar"]
+visible = false
+offset_left = 26.0
+offset_top = 295.0
+offset_right = 217.0
+offset_bottom = 322.0
+script = ExtResource("10_n7ghd")
+player_node_path = NodePath("../..")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Player_Healthbar"]
+offset_left = 32.0
+offset_top = 309.0
+offset_right = 96.0
+offset_bottom = 319.0
+scale = Vector2(3, 2)
+texture_under = ExtResource("11_urp6f")
+texture_progress = ExtResource("12_bwjto")
+script = ExtResource("13_606se")
+player_node_path = NodePath("../..")

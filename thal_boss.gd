@@ -22,7 +22,7 @@ var is_rolling := false
 @onready var attack1_hitbox := $Area2D/Attack1_Hitbox
 @onready var attack2_hitbox := $Area2D/Attack2_Hitbox
 @onready var attack3_hitbox := $Area2D/Attack3_Hitbox
-
+@onready var hurtbox := $Area2D/Hurtbox
 
 func _ready():
 	player = get_tree().get_first_node_in_group("player")
@@ -82,6 +82,7 @@ func start_roll():
 	is_rolling = true
 	roll_timer = roll_duration
 	sprite.play("roll")
+	hurtbox.disabled = true  # <- disable the hurtbox during roll
 
 func _on_AnimatedSprite2D_animation_finished():
 	if is_attacking and sprite.animation.begins_with("attack"):
@@ -92,6 +93,7 @@ func _on_AnimatedSprite2D_animation_finished():
 	elif is_rolling and sprite.animation == "roll":
 		is_rolling = false
 		roll_timer = 0
+		hurtbox.disabled = false  # <- re-enable the hurtbox
 
 func reset_attack_burst():
 	attacks_left = randi() % 3 + 1

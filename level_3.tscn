@@ -54,4 +54,4 @@ shape = SubResource("RectangleShape2D_rka8t")
 position = Vector2(113, 190)
 
 [node name="Vhaldir_Boss" parent="." instance=ExtResource("3_16pka")]
-position = Vector2(402, 157)
+position = Vector2(453, 163)

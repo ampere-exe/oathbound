@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=3 uid="uid://d22puu5djwhvg"]
+[gd_scene load_steps=73 format=3 uid="uid://d22puu5djwhvg"]
 
 [ext_resource type="Texture2D" uid="uid://d0flxmxcxnrv0" path="res://assets/Fantasy Warrior Pack 1/Fantasy Warrior/Attack1.png" id="1_jqkah"]
 [ext_resource type="Script" uid="uid://8umg025il2av" path="res://vhaldir_boss.gd" id="1_u77ea"]
@@ -19,6 +19,9 @@ size = Vector2(34.375, 50.625)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s35v4"]
 size = Vector2(45, 76.875)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5d5xk"]
+size = Vector2(20.625, 45.625)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cbo0u"]
 atlas = ExtResource("1_jqkah")
@@ -471,25 +474,27 @@ script = ExtResource("1_u77ea")
 
 [node name="Attack1_Hitbox" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(30.7813, 27.1875)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_u77ea")
 disabled = true
 
 [node name="Attack2_Hitbox" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(29.0625, 25.3125)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_fhr4l")
 disabled = true
 
 [node name="Attack3_Hitbox" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(34.375, 12.1875)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_s35v4")
 disabled = true
 
+[node name="Hurtbox" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0.312501, 27.8125)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_5d5xk")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_27rjg")
-animation = &"attack_3"
+animation = &"attack_1"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.375, 28)

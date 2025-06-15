@@ -72,9 +72,11 @@ func _physics_process(delta):
 		if attack_timer == 0 and attacks_left > 0:
 			start_attack()
 		else:
-			velocity.x = 0
+			# If can't attack, maybe shuffle around a bit or at least not freeze completely
+			velocity.x = sign(player.global_position.x - global_position.x)
 			sprite.play("idle")
 			try_jump_away()
+
 	elif distance <= detection_range:
 		var direction = (player.global_position - global_position).normalized()
 		velocity.x = direction.x * speed
@@ -101,12 +103,12 @@ func _on_animation_finished():
 	if sprite.animation.begins_with("attack") and is_attacking:
 		is_attacking = false
 		if attacks_left == 0:
-			attack_timer = randf_range(1, 2)
+			attack_timer = randf_range(1, 2.0)
 			reset_attack_burst()
 	# Removed jump animation end resetting is_jumping_away here
 
 func reset_attack_burst():
-	attacks_left = randi() % 4 + 2
+	attacks_left = randi() % 3 + 1
 
 func try_jump_away():
 	if jump_cooldown <= 0.0 and is_on_floor() and randf() < jump_chance:

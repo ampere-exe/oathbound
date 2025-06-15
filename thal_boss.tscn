@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://0ubeoo7okwix"]
+[gd_scene load_steps=61 format=3 uid="uid://0ubeoo7okwix"]
 
 [ext_resource type="Texture2D" uid="uid://cngm484hfbatf" path="res://assets/Miedieval Warrior Pack 1/Medieval Warrior Pack/Attack1.png" id="1_pdtw7"]
 [ext_resource type="Script" uid="uid://bjf1k8l8wv3cb" path="res://thal_boss.gd" id="1_t1gkb"]
@@ -19,6 +19,9 @@ size = Vector2(49.25, 52.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pua24"]
 size = Vector2(38.25, 82)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o2hoo"]
+size = Vector2(39, 79)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pua24"]
 atlas = ExtResource("1_pdtw7")
@@ -398,6 +401,10 @@ disabled = true
 position = Vector2(41, 19)
 shape = SubResource("RectangleShape2D_pua24")
 disabled = true
+
+[node name="Hurtbox" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0.5, 23.5)
+shape = SubResource("RectangleShape2D_o2hoo")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_3rxsb")
