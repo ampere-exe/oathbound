@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=3 uid="uid://bsaeqyfcgckla"]
+[gd_scene load_steps=80 format=3 uid="uid://bsaeqyfcgckla"]
 
 [ext_resource type="Script" uid="uid://bbcq4q41fvj0e" path="res://player.gd" id="1_i3pqv"]
 [ext_resource type="Texture2D" uid="uid://rlxt30im1k5n" path="res://assets/Miedieval Warrior Pack 2/Medieval Warrior Pack 2/Sprites/Idle.png" id="1_onrkg"]
@@ -21,6 +21,8 @@
 [ext_resource type="AudioStream" uid="uid://dojlhyneqcwiy" path="res://assets/Sounds/flesh.mp3" id="18_q13i1"]
 [ext_resource type="AudioStream" uid="uid://blw7wj7bdh0gk" path="res://assets/Sounds/slash.mp3" id="19_pylmc"]
 [ext_resource type="Texture2D" uid="uid://cj7414v2af8fs" path="res://assets/deathscreen.png" id="20_pbfsw"]
+[ext_resource type="Script" uid="uid://yyflcucfsef5" path="res://try_again1.gd" id="22_7ahtn"]
+[ext_resource type="Script" uid="uid://dy82yhd8svkca" path="res://main_menu1.gd" id="23_7lmhl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_onrkg"]
 size = Vector2(39.4444, 37.7778)
@@ -430,6 +432,20 @@ animations = [{
 "speed": 30.0
 }]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7lmhl"]
+bg_color = Color(0.529412, 0.105882, 0.0352941, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dx0e4"]
+bg_color = Color(0.529412, 0.105882, 0.0352941, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [node name="Player" type="CharacterBody2D"]
 scale = Vector2(1.8, 1.8)
 script = ExtResource("1_i3pqv")
@@ -520,5 +536,27 @@ texture_filter = 1
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("20_pbfsw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Deathscreen"]
+offset_left = 226.0
+offset_top = 248.0
+offset_right = 350.0
+offset_bottom = 311.0
+scale = Vector2(1.5, 1.5)
+
+[node name="Try_Again" type="Button" parent="Deathscreen/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_5tmop")
+theme_override_styles/normal = SubResource("StyleBoxFlat_7lmhl")
+text = "Fight Again"
+script = ExtResource("22_7ahtn")
+
+[node name="Main Menu" type="Button" parent="Deathscreen/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_5tmop")
+theme_override_styles/normal = SubResource("StyleBoxFlat_dx0e4")
+text = "Main Menu
+"
+script = ExtResource("23_7lmhl")
 
 [connection signal="area_entered" from="Sword_Hitbox" to="." method="_on_sword_hitbox_area_entered"]

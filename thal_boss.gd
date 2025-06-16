@@ -174,9 +174,6 @@ func take_damage(amount: int):
 func show_win_screen() -> void:
 	if win_screen:
 		win_screen.visible = true
-	await get_tree().create_timer(5).timeout
-	get_tree().reload_current_scene()
-
 
 
 func _on_attack_1_hitbox_area_entered(area: Area2D) -> void:

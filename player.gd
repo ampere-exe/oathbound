@@ -218,5 +218,3 @@ func take_damage(amount: int):
 func show_death_screen():
 	if death_screen:
 		death_screen.visible = true
-	await get_tree().create_timer(2.5).timeout
-	get_tree().reload_current_scene()

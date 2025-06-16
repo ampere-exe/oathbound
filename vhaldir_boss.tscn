@@ -1,4 +1,4 @@
-[gd_scene load_steps=80 format=3 uid="uid://d22puu5djwhvg"]
+[gd_scene load_steps=84 format=3 uid="uid://d22puu5djwhvg"]
 
 [ext_resource type="Texture2D" uid="uid://d0flxmxcxnrv0" path="res://assets/Fantasy Warrior Pack 1/Fantasy Warrior/Attack1.png" id="1_jqkah"]
 [ext_resource type="Script" uid="uid://8umg025il2av" path="res://vhaldir_boss.gd" id="1_u77ea"]
@@ -17,6 +17,8 @@
 [ext_resource type="AudioStream" uid="uid://dojlhyneqcwiy" path="res://assets/Sounds/flesh.mp3" id="15_w3ebf"]
 [ext_resource type="AudioStream" uid="uid://c5rh4nx2rkye8" path="res://assets/Sounds/heavyslash.mp3" id="16_lj0ti"]
 [ext_resource type="Texture2D" uid="uid://b25axd1m2m7oi" path="res://assets/winscreen.png" id="17_lj0ti"]
+[ext_resource type="Script" uid="uid://yyflcucfsef5" path="res://try_again1.gd" id="18_a1pfa"]
+[ext_resource type="Script" uid="uid://dy82yhd8svkca" path="res://main_menu1.gd" id="19_oukn4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cbo0u"]
 atlas = ExtResource("1_jqkah")
@@ -473,6 +475,20 @@ size = Vector2(45, 76.875)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5d5xk"]
 size = Vector2(20.625, 45.625)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c224f"]
+bg_color = Color(0.529412, 0.105882, 0.0352941, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5oiot"]
+bg_color = Color(0.529412, 0.105882, 0.0352941, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [node name="Vhaldir_Boss" type="CharacterBody2D"]
 scale = Vector2(1.6, 1.6)
 script = ExtResource("1_u77ea")
@@ -554,6 +570,28 @@ visible = false
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("17_lj0ti")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Winscreen"]
+offset_left = 226.0
+offset_top = 248.0
+offset_right = 350.0
+offset_bottom = 311.0
+scale = Vector2(1.5, 1.5)
+
+[node name="Try_Again" type="Button" parent="Winscreen/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("14_knfnd")
+theme_override_styles/normal = SubResource("StyleBoxFlat_c224f")
+text = "Fight Again"
+script = ExtResource("18_a1pfa")
+
+[node name="Main Menu" type="Button" parent="Winscreen/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("14_knfnd")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5oiot")
+text = "Main Menu
+"
+script = ExtResource("19_oukn4")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Attack1_Hitbox" to="." method="_on_attack_1_hitbox_area_entered"]
