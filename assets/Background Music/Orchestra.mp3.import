@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cut6cf4vxuqgx"
+path="res://.godot/imported/Orchestra.mp3-3448c0270b86a56f6582526b9769fd61.mp3str"
+
+[deps]
+
+source_file="res://assets/Background Music/Orchestra.mp3"
+dest_files=["res://.godot/imported/Orchestra.mp3-3448c0270b86a56f6582526b9769fd61.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,126 @@
+[gd_scene load_steps=13 format=3 uid="uid://dag4q7yl3tuil"]
+
+[ext_resource type="FontFile" uid="uid://ovjx4gagwekk" path="res://assets/gothicbyte/GothicByte.ttf" id="1_ouk20"]
+[ext_resource type="Script" uid="uid://bw7nxgyunncfj" path="res://play.gd" id="2_4hy44"]
+[ext_resource type="Texture2D" uid="uid://rpoljma401un" path="res://assets/backgrounds/gamescreen.png" id="2_mae5d"]
+[ext_resource type="Script" uid="uid://3cmgnsrgsmf6" path="res://how_to_play.gd" id="3_l48gv"]
+[ext_resource type="AudioStream" uid="uid://cut6cf4vxuqgx" path="res://assets/Background Music/Orchestra.mp3" id="3_mae5d"]
+[ext_resource type="Script" uid="uid://bv3cy1h6h4dk6" path="res://quit.gd" id="4_kk3ma"]
+[ext_resource type="Texture2D" uid="uid://c6lf3o2tgkge1" path="res://assets/Instructions.png" id="5_ecwwl"]
+[ext_resource type="Script" uid="uid://db8iijsimty7f" path="res://back.gd" id="6_ecwwl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mae5d"]
+bg_color = Color(0.528927, 0.107211, 0.0350873, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4hy44"]
+bg_color = Color(0.529412, 0.105882, 0.0352941, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ytr4m"]
+bg_color = Color(0.529412, 0.105882, 0.0352941, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kk3ma"]
+bg_color = Color(0.529412, 0.105882, 0.0352941, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 124.0
+offset_right = 407.0
+offset_bottom = 204.0
+scale = Vector2(1.5, 1.5)
+
+[node name="Play" type="OptionButton" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_ouk20")
+theme_override_styles/normal = SubResource("StyleBoxFlat_mae5d")
+alignment = 1
+selected = 0
+item_count = 3
+popup/item_0/text = "Select Level"
+popup/item_0/id = 0
+popup/item_1/text = "Easy: Thal the Bandit King"
+popup/item_1/id = 1
+popup/item_2/text = "Hard: Vhaldir, Blade of the Tempest Veil"
+popup/item_2/id = 2
+script = ExtResource("2_4hy44")
+
+[node name="How_To_Play" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_ouk20")
+theme_override_styles/normal = SubResource("StyleBoxFlat_4hy44")
+text = "How to Play
+"
+script = ExtResource("3_l48gv")
+instructions_canvas_layer_path = NodePath("../../Instructions")
+
+[node name="Quit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_ouk20")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ytr4m")
+text = "Quit"
+script = ExtResource("4_kk3ma")
+
+[node name="Gamescreen" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="TextureRect" type="TextureRect" parent="Gamescreen"]
+offset_right = 640.0
+offset_bottom = 360.0
+texture = ExtResource("2_mae5d")
+
+[node name="Instructions" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="TextureRect" type="TextureRect" parent="Instructions"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("5_ecwwl")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Instructions"]
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 116.0
+offset_bottom = 41.0
+
+[node name="Back" type="Button" parent="Instructions/VBoxContainer2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_ouk20")
+theme_override_styles/normal = SubResource("StyleBoxFlat_kk3ma")
+text = "Back
+"
+script = ExtResource("6_ecwwl")
+instructions_canvas_layer_path = NodePath("../..")
+
+[node name="Background Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_mae5d")
+autoplay = true
+attenuation = 5.09824
+
+[connection signal="item_selected" from="VBoxContainer/Play" to="VBoxContainer/Play" method="_on_item_selected"]
+[connection signal="pressed" from="VBoxContainer/How_To_Play" to="VBoxContainer/How_To_Play" method="_on_pressed"]
+[connection signal="pressed" from="VBoxContainer/Quit" to="VBoxContainer/Quit" method="_on_pressed"]

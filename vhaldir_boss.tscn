@@ -478,13 +478,11 @@ scale = Vector2(1.6, 1.6)
 script = ExtResource("1_u77ea")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(1, 1)
 sprite_frames = SubResource("SpriteFrames_27rjg")
 animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.375, 28)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_rahvj")
 
 [node name="Attack1_Hitbox" type="Area2D" parent="."]
@@ -495,11 +493,9 @@ shape = SubResource("RectangleShape2D_u77ea")
 disabled = true
 
 [node name="Attack2_Hitbox" type="Area2D" parent="."]
-scale = Vector2(1, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Attack2_Hitbox"]
 position = Vector2(29.0625, 25.3125)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_fhr4l")
 disabled = true
 
@@ -507,16 +503,13 @@ disabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Attack3_Hitbox"]
 position = Vector2(34.375, 12.1875)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_s35v4")
 disabled = true
 
 [node name="Vhaldir_Hurtbox" type="Area2D" parent="."]
-scale = Vector2(1, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Vhaldir_Hurtbox"]
 position = Vector2(0.312501, 27.8125)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_5d5xk")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
