@@ -7,7 +7,8 @@ extends CharacterBody2D
 @export var detection_range := 300
 @export var jump_chance := 0.05
 @export var jump_cooldown_time := 2.0
-@export var max_health := 250
+@export var max_health := 200
+
 var health := max_health
 var is_dead := false
 signal health_changed(current_health: int, max_health: int)
@@ -21,40 +22,45 @@ var attacks_left := 0
 var jump_cooldown := 0.0
 
 @onready var sprite := $AnimatedSprite2D
-@onready var attack1_hitbox := $Area2D/Attack1_Hitbox
-@onready var attack2_hitbox := $Area2D/Attack2_Hitbox
-@onready var attack3_hitbox := $Area2D/Attack3_Hitbox
+@onready var area := $Vhaldir_Hurtbox
+@onready var attack1_area := $Attack1_Hitbox
+@onready var attack2_area := $Attack2_Hitbox
+@onready var attack3_area := $Attack3_Hitbox
+@onready var attack1_shape := $Attack1_Hitbox/CollisionShape2D
+@onready var attack2_shape := $Attack2_Hitbox/CollisionShape2D
+@onready var attack3_shape := $Attack3_Hitbox/CollisionShape2D
+@onready var hurtbox := $Vhaldir_Hurtbox/CollisionShape2D
+@onready var win_screen := $Winscreen
 
 func _ready():
-	emit_signal("health_changed", health, max_health)
 	player = get_tree().get_first_node_in_group("player")
 	randomize()
 	sprite.connect("animation_finished", Callable(self, "_on_animation_finished"))
 	sprite.connect("frame_changed", Callable(self, "_on_frame_changed"))
+	
+	# Connect Area2D signals for detecting hits
+	attack1_area.connect("area_entered", Callable(self, "_on_attack1_hitbox_area_entered"))
+	attack2_area.connect("area_entered", Callable(self, "_on_attack2_hitbox_area_entered"))
+	attack3_area.connect("area_entered", Callable(self, "_on_attack3_hitbox_area_entered"))
+	
 	reset_attack_burst()
+	emit_signal("health_changed", health, max_health)
 
 func _physics_process(delta):
 	if is_dead or player == null:
 		return
 
-	# Apply gravity
-	if not is_on_floor():
-		velocity.y += gravity * delta
-	else:
-		velocity.y = 0
-		# Only reset jump state after landing
-		if is_jumping_away:
-			is_jumping_away = false
-
-	# Face the player and flip hitboxes
+	# Face player and flip sprite + hitboxes
 	var facing_left = global_position.x > player.global_position.x
 	sprite.flip_h = facing_left
-	var flip_sign = -1 if facing_left else 1
-
-	# Flip hitbox positions
-	attack1_hitbox.position.x = abs(attack1_hitbox.position.x) * flip_sign
-	attack2_hitbox.position.x = abs(attack2_hitbox.position.x) * flip_sign
-	attack3_hitbox.position.x = abs(attack3_hitbox.position.x) * flip_sign
+	hurtbox.scale.x = -1 if facing_left else 1
+	attack1_shape.scale.x = -1 if facing_left else 1
+	attack2_shape.scale.x = -1 if facing_left else 1
+	attack3_shape.scale.x = -1 if facing_left else 1
+	
+	attack1_shape.position.x = abs(attack1_shape.position.x) * (-1 if facing_left else 1)
+	attack2_shape.position.x = abs(attack2_shape.position.x) * (-1 if facing_left else 1)
+	attack3_shape.position.x = abs(attack3_shape.position.x) * (-1 if facing_left else 1)
 
 	var distance = global_position.distance_to(player.global_position)
 
@@ -62,25 +68,32 @@ func _physics_process(delta):
 	attack_timer = max(attack_timer - delta, 0)
 	jump_cooldown = max(jump_cooldown - delta, 0)
 
+	# Apply gravity always when not on floor
+	if not is_on_floor():
+		velocity.y += gravity * delta
+		velocity.y = min(velocity.y, 1000)  # clamp fall speed to avoid excessive speed
+
 	if is_attacking:
 		velocity.x = 0
 	elif is_jumping_away:
-		# Maintain current velocity and jump/fall animation, skip other logic
-		if velocity.y < 0:
-			sprite.play("jump")
+		# If landed, stop jumping away
+		if is_on_floor():
+			is_jumping_away = false
+			velocity.x = 0
+			sprite.play("idle")
 		else:
-			sprite.play("fall")
-		move_and_slide()
-		return
+			# Keep velocity set during jump away
+			if velocity.y < 0:
+				sprite.play("jump")
+			else:
+				sprite.play("fall")
 	elif distance <= attack_range:
 		if attack_timer == 0 and attacks_left > 0:
 			start_attack()
 		else:
-			# If can't attack, maybe shuffle around a bit or at least not freeze completely
-			velocity.x = sign(player.global_position.x - global_position.x)
+			velocity.x = sign(player.global_position.x - global_position.x) * 0  # Stop horizontal when close
 			sprite.play("idle")
 			try_jump_away()
-
 	elif distance <= detection_range:
 		var direction = (player.global_position - global_position).normalized()
 		velocity.x = direction.x * speed
@@ -91,31 +104,23 @@ func _physics_process(delta):
 
 	move_and_slide()
 
-	if not is_attacking and not is_on_floor():
-		if velocity.y < 0:
-			sprite.play("jump")
-		else:
-			sprite.play("fall")
-
 func start_attack():
 	is_attacking = true
 	attacks_left -= 1
-	var attack_index = randi() % 3 + 1
-	sprite.play("attack_%d" % attack_index)
+	sprite.play("attack_%d" % (randi() % 3 + 1))
 
 func _on_animation_finished():
-	if sprite.animation.begins_with("attack") and is_attacking:
+	if is_attacking and sprite.animation.begins_with("attack"):
 		is_attacking = false
 		if attacks_left == 0:
-			attack_timer = randf_range(1, 2.0)
+			attack_timer = randf_range(1.0, 2.0)
 			reset_attack_burst()
-	# Removed jump animation end resetting is_jumping_away here
 
 func reset_attack_burst():
 	attacks_left = randi() % 3 + 1
 
 func try_jump_away():
-	if jump_cooldown <= 0.0 and is_on_floor() and randf() < jump_chance:
+	if jump_cooldown <= 0 and is_on_floor() and randf() < jump_chance:
 		var away_dir = (global_position - player.global_position).normalized()
 		var jump_dir_x = sign(away_dir.x)
 		if jump_dir_x == 0:
@@ -126,30 +131,62 @@ func try_jump_away():
 		is_jumping_away = true
 		sprite.play("jump")
 
+func _on_frame_changed():
+	var anim = sprite.animation
+	var frame = sprite.frame
+	var total = sprite.sprite_frames.get_frame_count(anim)
+
+	# Disable all attack hitboxes by default
+	attack1_shape.disabled = true
+	attack2_shape.disabled = true
+	attack3_shape.disabled = true
+
+	# Enable appropriate hitbox on correct attack animation frame
+	if anim == "attack_1" and frame == total - 3:
+		attack1_shape.disabled = false
+		$Slash.play()
+	elif anim == "attack_2" and frame == total - 5:
+		attack2_shape.disabled = false
+		$Slash.play()
+	elif anim == "attack_3" and frame == total - 4:
+		attack3_shape.disabled = false
+		$Slash.play()
+
+func _on_attack1_hitbox_area_entered(area: Area2D) -> void:
+	if area.name == "Player_Hurtbox":
+		var p = area.get_parent()
+		if p.has_method("take_damage"):
+			p.take_damage(25)
+			print("Boss dealt 24 damage with Attack 1")
+
+func _on_attack2_hitbox_area_entered(area: Area2D) -> void:
+	if area.name == "Player_Hurtbox":
+		var p = area.get_parent()
+		if p.has_method("take_damage"):
+			p.take_damage(21)
+			print("Boss dealt 21 damage with Attack 2")
+
+func _on_attack3_hitbox_area_entered(area: Area2D) -> void:
+	if area.name == "Player_Hurtbox":
+		var p = area.get_parent()
+		if p.has_method("take_damage"):
+			p.take_damage(36)
+			print("Boss dealt 36 damage with Attack 3")
+
 func take_damage(amount: int):
 	if is_dead:
 		return
 	health = max(0, health - amount)
+	$Flesh.play()
 	print("Boss took ", amount, " damage. Current health: ", health)
 	emit_signal("health_changed", health, max_health)
 	if health <= 0:
 		is_dead = true
 		sprite.play("death")
-
-func _on_frame_changed():
-	var anim = sprite.animation
-	var frame = sprite.frame
-
-	# Disable all hitboxes by default
-	attack1_hitbox.disabled = true
-	attack2_hitbox.disabled = true
-	attack3_hitbox.disabled = true
-
-	# Enable based on specific frames
-	# TEMPORARY DAMAGE DURING ATTACK SWING
-	if anim == "attack_1" and frame == 3:
-		take_damage(10)
-	elif anim == "attack_2" and frame == 2:
-		take_damage(12)
-	elif anim == "attack_3" and frame == 3:
-		take_damage(15)
+		show_win_screen()
+		
+func show_win_screen() -> void:
+	if win_screen:
+		win_screen.visible = true
+	await get_tree().create_timer(5).timeout
+	get_tree().reload_current_scene()

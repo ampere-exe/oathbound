@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://0ubeoo7okwix"]
+[gd_scene load_steps=68 format=3 uid="uid://0ubeoo7okwix"]
 
 [ext_resource type="Texture2D" uid="uid://cngm484hfbatf" path="res://assets/Miedieval Warrior Pack 1/Medieval Warrior Pack/Attack1.png" id="1_pdtw7"]
 [ext_resource type="Script" uid="uid://bjf1k8l8wv3cb" path="res://thal_boss.gd" id="1_t1gkb"]
@@ -13,18 +13,10 @@
 [ext_resource type="Texture2D" uid="uid://dpefja4nmqj16" path="res://assets/Boss Healthbar/bossUnder.png" id="11_o2hoo"]
 [ext_resource type="Texture2D" uid="uid://hh6rvh50iivp" path="res://assets/Boss Healthbar/bossProgress.png" id="12_be3m5"]
 [ext_resource type="Script" uid="uid://bket28mwship4" path="res://thal_progress_bar.gd" id="13_o2hoo"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_byiqs"]
-size = Vector2(58.0625, 90.625)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wnwtr"]
-size = Vector2(49.25, 52.5)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pua24"]
-size = Vector2(38.25, 82)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_o2hoo"]
-size = Vector2(39, 79)
+[ext_resource type="FontFile" uid="uid://ovjx4gagwekk" path="res://assets/gothicbyte/GothicByte.ttf" id="14_be3m5"]
+[ext_resource type="AudioStream" uid="uid://dojlhyneqcwiy" path="res://assets/Sounds/flesh.mp3" id="15_ug8ed"]
+[ext_resource type="AudioStream" uid="uid://dw4ek1s0leq0q" path="res://assets/Sounds/boss_slash.mp3" id="16_u766x"]
+[ext_resource type="Texture2D" uid="uid://b25axd1m2m7oi" path="res://assets/winscreen.png" id="17_34e8y"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pua24"]
 atlas = ExtResource("1_pdtw7")
@@ -219,7 +211,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"attack_1",
-"speed": 10.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -253,7 +245,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"attack_3",
-"speed": 10.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -285,7 +277,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"death",
-"speed": 8.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -377,7 +369,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_wn4p0")
 }],
-"loop": true,
+"loop": false,
 "name": &"stagger",
 "speed": 10.0
 }]
@@ -385,39 +377,55 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t1imx"]
 size = Vector2(39, 79)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_byiqs"]
+size = Vector2(58.0625, 90.625)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wnwtr"]
+size = Vector2(49.25, 52.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pua24"]
+size = Vector2(38.25, 82)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o2hoo"]
+size = Vector2(39, 79)
+
 [node name="Thal_Boss" type="CharacterBody2D"]
 script = ExtResource("1_t1gkb")
 
-[node name="Area2D" type="Area2D" parent="."]
-
-[node name="Attack1_Hitbox" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(51, 17)
-shape = SubResource("RectangleShape2D_byiqs")
-disabled = true
-
-[node name="Attack2_Hitbox" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(47.375, 35)
-shape = SubResource("RectangleShape2D_wnwtr")
-disabled = true
-
-[node name="Attack3_Hitbox" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(41, 19)
-shape = SubResource("RectangleShape2D_pua24")
-disabled = true
-
-[node name="Hurtbox" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(0.5, 23.5)
-shape = SubResource("RectangleShape2D_o2hoo")
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_3rxsb")
-animation = &"death"
-frame = 8
-frame_progress = 1.0
+animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 23)
 shape = SubResource("RectangleShape2D_t1imx")
+
+[node name="Attack1_Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack1_Hitbox"]
+position = Vector2(51, 17)
+shape = SubResource("RectangleShape2D_byiqs")
+disabled = true
+
+[node name="Attack2_Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack2_Hitbox"]
+position = Vector2(47.375, 35)
+shape = SubResource("RectangleShape2D_wnwtr")
+disabled = true
+
+[node name="Attack3_Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack3_Hitbox"]
+position = Vector2(41, 19)
+shape = SubResource("RectangleShape2D_pua24")
+disabled = true
+
+[node name="Thal_Hurtbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Thal_Hurtbox"]
+position = Vector2(0.5, 23.5)
+shape = SubResource("RectangleShape2D_o2hoo")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -425,16 +433,43 @@ shape = SubResource("RectangleShape2D_t1imx")
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -255.0
-offset_top = 20.0
-offset_right = 1.0
-offset_bottom = 30.0
+offset_left = -205.0
+offset_top = 40.0
+offset_right = 51.0
+offset_bottom = 50.0
 grow_horizontal = 2
-scale = Vector2(2, 2)
-max_value = 200.0
+scale = Vector2(1.6, 1.6)
+max_value = 150.0
 texture_under = ExtResource("11_o2hoo")
 texture_progress = ExtResource("12_be3m5")
 script = ExtResource("13_o2hoo")
 boss_node_path = NodePath("../..")
 
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_left = 225.0
+offset_top = 17.0
+offset_right = 417.0
+offset_bottom = 33.0
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("14_be3m5")
+text = "Bandit King Thal of Varric"
+
+[node name="Flesh" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("15_ug8ed")
+
+[node name="Slash" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("16_u766x")
+attenuation = 2.37841
+
+[node name="Winscreen" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="TextureRect" type="TextureRect" parent="Winscreen"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("17_34e8y")
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="area_entered" from="Attack1_Hitbox" to="." method="_on_attack_1_hitbox_area_entered"]
+[connection signal="area_entered" from="Attack2_Hitbox" to="." method="_on_attack_2_hitbox_area_entered"]
+[connection signal="area_entered" from="Attack3_Hitbox" to="." method="_on_attack_3_hitbox_area_entered"]

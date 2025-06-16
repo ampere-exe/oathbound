@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cmha11g6vnhv0"
+path="res://.godot/imported/Dark Descent.mp3-9df7c50863e1ceb647f95d2664fae8e0.mp3str"
+
+[deps]
+
+source_file="res://assets/Background Music/Dark Descent.mp3"
+dest_files=["res://.godot/imported/Dark Descent.mp3-9df7c50863e1ceb647f95d2664fae8e0.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

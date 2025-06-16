@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dfyc7rkyu4we6"]
+[gd_scene load_steps=9 format=3 uid="uid://dfyc7rkyu4we6"]
 
 [ext_resource type="Texture2D" uid="uid://dqsyomtvxpw6y" path="res://assets/backgrounds/castle_outskirts.png" id="1_3hls8"]
 [ext_resource type="PackedScene" uid="uid://bsaeqyfcgckla" path="res://player.tscn" id="2_hbghi"]
 [ext_resource type="PackedScene" uid="uid://0ubeoo7okwix" path="res://thal_boss.tscn" id="3_hn12h"]
+[ext_resource type="AudioStream" uid="uid://dw3g8jk70h3n2" path="res://assets/Background Music/Theme of Agrual.mp3" id="4_ihfcg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hbghi"]
 size = Vector2(640, 25)
@@ -55,3 +56,7 @@ position = Vector2(112, 211)
 
 [node name="Thal_Boss" parent="." instance=ExtResource("3_hn12h")]
 position = Vector2(511, 201)
+
+[node name="Background Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_ihfcg")
+autoplay = true

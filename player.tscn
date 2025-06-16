@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://bsaeqyfcgckla"]
+[gd_scene load_steps=76 format=3 uid="uid://bsaeqyfcgckla"]
 
 [ext_resource type="Script" uid="uid://bbcq4q41fvj0e" path="res://player.gd" id="1_i3pqv"]
 [ext_resource type="Texture2D" uid="uid://rlxt30im1k5n" path="res://assets/Miedieval Warrior Pack 2/Medieval Warrior Pack 2/Sprites/Idle.png" id="1_onrkg"]
@@ -9,16 +9,21 @@
 [ext_resource type="Texture2D" uid="uid://dqvce3b20qmmr" path="res://assets/Miedieval Warrior Pack 2/Medieval Warrior Pack 2/Sprites/Death.png" id="4_dw050"]
 [ext_resource type="Texture2D" uid="uid://lxvf5pcj74a2" path="res://assets/Miedieval Warrior Pack 2/Medieval Warrior Pack 2/Sprites/Jump.png" id="5_dw050"]
 [ext_resource type="Texture2D" uid="uid://fal33ag0q5h0" path="res://assets/Miedieval Warrior Pack 2/Medieval Warrior Pack 2/Sprites/Take Hit - white silhouette.png" id="9_b26j0"]
+[ext_resource type="FontFile" uid="uid://ovjx4gagwekk" path="res://assets/gothicbyte/GothicByte.ttf" id="10_5tmop"]
 [ext_resource type="Script" uid="uid://vnlhhw4wv2gc" path="res://progress_bar.gd" id="10_n7ghd"]
 [ext_resource type="Texture2D" uid="uid://dhfg6ovditw56" path="res://assets/Player Healthbar/playerUnder.png" id="11_urp6f"]
 [ext_resource type="Texture2D" uid="uid://ckckauvsib7ht" path="res://assets/Player Healthbar/playerProgress.png" id="12_bwjto"]
 [ext_resource type="Script" uid="uid://dlu3oddpgfckc" path="res://texture_progress_bar.gd" id="13_606se"]
+[ext_resource type="Texture2D" uid="uid://daxlgx74ea2e5" path="res://assets/Hit Effect 01/Hit Effect 01 1.png" id="14_606se"]
+[ext_resource type="Texture2D" uid="uid://cetbd0mrgql0j" path="res://assets/Hit Effect 01/63.png" id="15_u1c27"]
+[ext_resource type="AudioStream" uid="uid://cblfj3hpufr1q" path="res://assets/Sounds/deflect1.mp3" id="16_op7ga"]
+[ext_resource type="AudioStream" uid="uid://byftfac7plrbs" path="res://assets/Sounds/deflect2.mp3" id="17_q13i1"]
+[ext_resource type="AudioStream" uid="uid://dojlhyneqcwiy" path="res://assets/Sounds/flesh.mp3" id="18_q13i1"]
+[ext_resource type="AudioStream" uid="uid://blw7wj7bdh0gk" path="res://assets/Sounds/slash.mp3" id="19_pylmc"]
+[ext_resource type="Texture2D" uid="uid://cj7414v2af8fs" path="res://assets/deathscreen.png" id="20_pbfsw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_onrkg"]
 size = Vector2(39.4444, 37.7778)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_b26j0"]
-size = Vector2(23.8889, 38.8889)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pbfsw"]
 atlas = ExtResource("2_2hs0m")
@@ -260,7 +265,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_nvl01")
 }],
-"loop": false,
+"loop": true,
 "name": &"idle",
 "speed": 10.0
 }, {
@@ -319,37 +324,142 @@ animations = [{
 }],
 "loop": false,
 "name": &"stagger",
-"speed": 10.0
+"speed": 12.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2hs0m"]
 size = Vector2(23.5, 39.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b26j0"]
+size = Vector2(23.8889, 38.8889)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8gr2b"]
+atlas = ExtResource("15_u1c27")
+region = Rect2(0, 0, 64, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vl8ci"]
+atlas = ExtResource("15_u1c27")
+region = Rect2(64, 0, 64, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ieltc"]
+atlas = ExtResource("15_u1c27")
+region = Rect2(128, 0, 64, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fddr8"]
+atlas = ExtResource("15_u1c27")
+region = Rect2(192, 0, 64, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oybyf"]
+atlas = ExtResource("15_u1c27")
+region = Rect2(256, 0, 64, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajfva"]
+atlas = ExtResource("15_u1c27")
+region = Rect2(320, 0, 64, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ef02"]
+atlas = ExtResource("15_u1c27")
+region = Rect2(384, 0, 64, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ibah8"]
+atlas = ExtResource("14_606se")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3iwfv"]
+atlas = ExtResource("14_606se")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qwsg1"]
+atlas = ExtResource("14_606se")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1xqrm"]
+atlas = ExtResource("14_606se")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bfour"]
+atlas = ExtResource("14_606se")
+region = Rect2(240, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pfmca"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8gr2b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vl8ci")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ieltc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fddr8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oybyf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ajfva")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ef02")
+}],
+"loop": true,
+"name": &"Spark2",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ibah8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3iwfv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qwsg1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1xqrm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bfour")
+}],
+"loop": false,
+"name": &"spark",
+"speed": 30.0
+}]
 
 [node name="Player" type="CharacterBody2D"]
 scale = Vector2(1.8, 1.8)
 script = ExtResource("1_i3pqv")
 metadata/_edit_group_ = true
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Sword_Hitbox" type="Area2D" parent="."]
 
-[node name="Sword_Hitbox" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sword_Hitbox"]
 position = Vector2(33.6111, 11.1111)
 shape = SubResource("RectangleShape2D_onrkg")
 disabled = true
 
-[node name="Hurtbox" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(1.38889, 10)
-shape = SubResource("RectangleShape2D_b26j0")
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["player"]]
 sprite_frames = SubResource("SpriteFrames_pbfsw")
-animation = &"death"
+animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1.25, 10.25)
 shape = SubResource("RectangleShape2D_2hs0m")
 
 [node name="Player_Healthbar" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="Player_Healthbar"]
+offset_left = 34.0
+offset_top = 291.0
+offset_right = 233.0
+offset_bottom = 307.0
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("10_5tmop")
+text = "Health"
 
 [node name="ProgressBar" type="ProgressBar" parent="Player_Healthbar"]
 visible = false
@@ -370,3 +480,45 @@ texture_under = ExtResource("11_urp6f")
 texture_progress = ExtResource("12_bwjto")
 script = ExtResource("13_606se")
 player_node_path = NodePath("../..")
+
+[node name="Player_Hurtbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player_Hurtbox"]
+position = Vector2(1.38889, 10)
+shape = SubResource("RectangleShape2D_b26j0")
+
+[node name="SparkEffect" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_pfmca")
+animation = &"spark"
+frame = 4
+frame_progress = 1.0
+
+[node name="Deflect1" type="AudioStreamPlayer2D" parent="."]
+scale = Vector2(0.555556, 0.555556)
+stream = ExtResource("16_op7ga")
+attenuation = 0.0625002
+
+[node name="Deflect2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("17_q13i1")
+volume_db = 1.0
+attenuation = 0.0384733
+
+[node name="Flesh" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("18_q13i1")
+
+[node name="Slash" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("19_pylmc")
+attenuation = 6.06286
+
+[node name="Deathscreen" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="TextureRect" type="TextureRect" parent="Deathscreen"]
+texture_filter = 1
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("20_pbfsw")
+
+[connection signal="area_entered" from="Sword_Hitbox" to="." method="_on_sword_hitbox_area_entered"]

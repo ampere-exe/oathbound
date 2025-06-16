@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=3 uid="uid://d22puu5djwhvg"]
+[gd_scene load_steps=80 format=3 uid="uid://d22puu5djwhvg"]
 
 [ext_resource type="Texture2D" uid="uid://d0flxmxcxnrv0" path="res://assets/Fantasy Warrior Pack 1/Fantasy Warrior/Attack1.png" id="1_jqkah"]
 [ext_resource type="Script" uid="uid://8umg025il2av" path="res://vhaldir_boss.gd" id="1_u77ea"]
@@ -13,18 +13,10 @@
 [ext_resource type="Texture2D" uid="uid://dpefja4nmqj16" path="res://assets/Boss Healthbar/bossUnder.png" id="11_5d5xk"]
 [ext_resource type="Texture2D" uid="uid://hh6rvh50iivp" path="res://assets/Boss Healthbar/bossProgress.png" id="12_knfnd"]
 [ext_resource type="Script" uid="uid://cmvxrpeexkrja" path="res://vhaldir_progress_bar.gd" id="13_n3raw"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_u77ea"]
-size = Vector2(39.6875, 46.875)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fhr4l"]
-size = Vector2(34.375, 50.625)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_s35v4"]
-size = Vector2(45, 76.875)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_5d5xk"]
-size = Vector2(20.625, 45.625)
+[ext_resource type="FontFile" uid="uid://ovjx4gagwekk" path="res://assets/gothicbyte/GothicByte.ttf" id="14_knfnd"]
+[ext_resource type="AudioStream" uid="uid://dojlhyneqcwiy" path="res://assets/Sounds/flesh.mp3" id="15_w3ebf"]
+[ext_resource type="AudioStream" uid="uid://c5rh4nx2rkye8" path="res://assets/Sounds/heavyslash.mp3" id="16_lj0ti"]
+[ext_resource type="Texture2D" uid="uid://b25axd1m2m7oi" path="res://assets/winscreen.png" id="17_lj0ti"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cbo0u"]
 atlas = ExtResource("1_jqkah")
@@ -276,7 +268,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"attack_1",
-"speed": 12.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -302,7 +294,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"attack_2",
-"speed": 14.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -331,7 +323,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"attack_3",
-"speed": 12.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -357,7 +349,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"death",
-"speed": 10.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -469,38 +461,63 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rahvj"]
 size = Vector2(20.75, 46)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u77ea"]
+size = Vector2(39.6875, 46.875)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fhr4l"]
+size = Vector2(34.375, 50.625)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s35v4"]
+size = Vector2(45, 76.875)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5d5xk"]
+size = Vector2(20.625, 45.625)
+
 [node name="Vhaldir_Boss" type="CharacterBody2D"]
 scale = Vector2(1.6, 1.6)
 script = ExtResource("1_u77ea")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(1, 1)
+sprite_frames = SubResource("SpriteFrames_27rjg")
+animation = &"idle"
 
-[node name="Attack1_Hitbox" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.375, 28)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_rahvj")
+
+[node name="Attack1_Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack1_Hitbox"]
 position = Vector2(30.7813, 27.1875)
 shape = SubResource("RectangleShape2D_u77ea")
 disabled = true
 
-[node name="Attack2_Hitbox" type="CollisionShape2D" parent="Area2D"]
+[node name="Attack2_Hitbox" type="Area2D" parent="."]
+scale = Vector2(1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack2_Hitbox"]
 position = Vector2(29.0625, 25.3125)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_fhr4l")
 disabled = true
 
-[node name="Attack3_Hitbox" type="CollisionShape2D" parent="Area2D"]
+[node name="Attack3_Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack3_Hitbox"]
 position = Vector2(34.375, 12.1875)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_s35v4")
 disabled = true
 
-[node name="Hurtbox" type="CollisionShape2D" parent="Area2D"]
+[node name="Vhaldir_Hurtbox" type="Area2D" parent="."]
+scale = Vector2(1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Vhaldir_Hurtbox"]
 position = Vector2(0.312501, 27.8125)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_5d5xk")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_27rjg")
-animation = &"attack_1"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.375, 28)
-shape = SubResource("RectangleShape2D_rahvj")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -508,16 +525,44 @@ shape = SubResource("RectangleShape2D_rahvj")
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -255.0
-offset_top = 20.0
-offset_right = 1.0
-offset_bottom = 60.0
+offset_left = -205.0
+offset_top = 38.0
+offset_right = 51.0
+offset_bottom = 78.0
 grow_horizontal = 2
-scale = Vector2(2, 2)
-max_value = 250.0
+scale = Vector2(1.6, 1.6)
+max_value = 200.0
 texture_under = ExtResource("11_5d5xk")
 texture_progress = ExtResource("12_knfnd")
 script = ExtResource("13_n3raw")
 boss_node_path = NodePath("../..")
 
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_left = 184.0
+offset_top = 17.0
+offset_right = 457.0
+offset_bottom = 52.0
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("14_knfnd")
+text = "Lord Vhaldir, Blade of the Tempest Veil
+"
+
+[node name="Flesh" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("15_w3ebf")
+
+[node name="Slash" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("16_lj0ti")
+attenuation = 3.73213
+
+[node name="Winscreen" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="TextureRect" type="TextureRect" parent="Winscreen"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("17_lj0ti")
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="area_entered" from="Attack1_Hitbox" to="." method="_on_attack_1_hitbox_area_entered"]
+[connection signal="area_entered" from="Attack2_Hitbox" to="." method="_on_attack_2_hitbox_area_entered"]
+[connection signal="area_entered" from="Attack3_Hitbox" to="." method="_on_attack_3_hitbox_area_entered"]

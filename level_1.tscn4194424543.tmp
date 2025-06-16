@@ -1,0 +1,62 @@
+[gd_scene load_steps=8 format=3 uid="uid://dfyc7rkyu4we6"]
+
+[ext_resource type="Texture2D" uid="uid://dqsyomtvxpw6y" path="res://assets/backgrounds/castle_outskirts.png" id="1_3hls8"]
+[ext_resource type="PackedScene" uid="uid://bsaeqyfcgckla" path="res://player.tscn" id="2_hbghi"]
+[ext_resource type="PackedScene" uid="uid://0ubeoo7okwix" path="res://thal_boss.tscn" id="3_hn12h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hbghi"]
+size = Vector2(640, 25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hn12h"]
+size = Vector2(20, 360)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ihfcg"]
+size = Vector2(22, 359)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rka8t"]
+size = Vector2(639, 20)
+
+[node name="level 1" type="Node2D"]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 640.0
+offset_bottom = 540.0
+texture = ExtResource("1_3hls8")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Ground Boundary" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground Boundary"]
+position = Vector2(320, 277.5)
+shape = SubResource("RectangleShape2D_hbghi")
+
+[node name="Left Boundary" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Left Boundary"]
+position = Vector2(-10, 180)
+shape = SubResource("RectangleShape2D_hn12h")
+
+[node name="Right Boundary" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Right Boundary"]
+position = Vector2(651, 180.5)
+shape = SubResource("RectangleShape2D_ihfcg")
+
+[node name="Top Boundary" type="StaticBody2D" parent="."]
+position = Vector2(325, 17)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Top Boundary"]
+position = Vector2(-5, -27)
+shape = SubResource("RectangleShape2D_rka8t")
+
+[node name="Player" parent="." instance=ExtResource("2_hbghi")]
+position = Vector2(112, 211)
+max_health = null
+speed = null
+jump_force = null
+gravity = null
+max_fall_speed = null
+
+[node name="Thal_Boss" parent="." instance=ExtResource("3_hn12h")]
+position = Vector2(511, 201)

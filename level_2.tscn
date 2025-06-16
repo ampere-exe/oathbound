@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dfwe10mg57ova"]
+[gd_scene load_steps=9 format=3 uid="uid://dfwe10mg57ova"]
 
 [ext_resource type="Texture2D" uid="uid://cnplxnc6yn0j8" path="res://assets/backgrounds/castle_interior.png" id="1_xdadj"]
 [ext_resource type="PackedScene" uid="uid://bsaeqyfcgckla" path="res://player.tscn" id="2_1y8me"]
 [ext_resource type="PackedScene" uid="uid://d22puu5djwhvg" path="res://vhaldir_boss.tscn" id="3_n7ypv"]
+[ext_resource type="AudioStream" uid="uid://cmha11g6vnhv0" path="res://assets/Background Music/Dark Descent.mp3" id="4_1y8me"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hbghi"]
 size = Vector2(640, 25)
@@ -54,4 +55,8 @@ shape = SubResource("RectangleShape2D_rka8t")
 position = Vector2(113, 190)
 
 [node name="Vhaldir_Boss" parent="." instance=ExtResource("3_n7ypv")]
-position = Vector2(453, 163)
+position = Vector2(505, 163)
+
+[node name="Background Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_1y8me")
+autoplay = true
