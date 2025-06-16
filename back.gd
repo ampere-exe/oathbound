@@ -10,25 +10,18 @@ func _ready():
 		return
 
 	# Get the CanvasLayer node using the exported NodePath.
-	# We expect it to be a CanvasLayer, so we cast it for type safety.
 	var instructions_layer: CanvasLayer = get_node(instructions_canvas_layer_path)
 	if instructions_layer == null:
 		print("ERROR: Instructions CanvasLayer not found at path: ", instructions_canvas_layer_path)
 		return
 
 	# Connect the 'pressed' signal of this button to the '_on_pressed' function.
-	# This function will be called whenever the button is clicked or activated.
 	self.pressed.connect(_on_pressed)
 
-# This function is called when the button is pressed.
+# Function called when the button is pressed.
 func _on_pressed():
-	# Get the CanvasLayer node.
 	var instructions_layer: CanvasLayer = get_node(instructions_canvas_layer_path)
-
-	# Check if the CanvasLayer exists before trying to access its properties.
+	# Check if the CanvasLayer exists before trying to access properties.
 	if instructions_layer != null:
-		# Toggle the 'visible' property of the CanvasLayer.
 		# If it's visible, make it invisible. If it's invisible, make it visible.
 		instructions_layer.visible = not instructions_layer.visible
-	else:
-		print("ERROR: Could not toggle Instructions CanvasLayer visibility. Node not found.")

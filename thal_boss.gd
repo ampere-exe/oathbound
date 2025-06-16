@@ -15,15 +15,15 @@ signal health_changed(current_health: int, max_health: int)
 var player: Node2D = null
 var is_attacking := false
 
+# Boss action variables
 var attack_timer := 0.0
-var attacks_left := 0  # How many attacks left in this burst
-
+var attacks_left := 0  
 var roll_timer := 0.0
 var roll_duration := 0.7
 var roll_chance := 0.05
-
 var is_rolling := false
 
+# Sprite and collision variables
 @onready var sprite := $AnimatedSprite2D
 @onready var area := $Thal_Hurtbox
 @onready var attack1_hitbox := $Attack1_Hitbox/CollisionShape2D
@@ -32,6 +32,7 @@ var is_rolling := false
 @onready var hurtbox := $Thal_Hurtbox/CollisionShape2D
 @onready var win_screen := $Winscreen
 
+# Initializations and connections
 func _ready():
 	player = get_tree().get_first_node_in_group("player")
 	randomize()
@@ -46,6 +47,7 @@ func _ready():
 	# Emit initial health state for healthbar setup
 	emit_signal("health_changed", health, max_health)
 
+# Physics for boss
 func _physics_process(delta):
 	if is_dead or player == null:
 		return
@@ -101,6 +103,7 @@ func start_roll():
 	sprite.play("roll")
 	hurtbox.disabled = true
 
+# Sets some basic boss attack queuing 
 func _on_AnimatedSprite2D_animation_finished():
 	if is_attacking and sprite.animation.begins_with("attack"):
 		is_attacking = false
@@ -115,6 +118,7 @@ func _on_AnimatedSprite2D_animation_finished():
 func reset_attack_burst():
 	attacks_left = randi() % 3 + 1
 
+# Set hitboxes for the boss and sounds
 func _on_frame_changed():
 	var anim = sprite.animation
 	var frame = sprite.frame
@@ -133,27 +137,6 @@ func _on_frame_changed():
 	elif anim == "attack_3" and frame == total - 2:
 		$Slash.play()
 		attack3_hitbox.disabled = false
-
-func _on_attack1_hitbox_area_entered(area: Area2D) -> void:
-	if area.name == "Player_Hurtbox":
-		var p = area.get_parent()
-		if p.has_method("take_damage"):
-			p.take_damage(34)
-			print("Dealt 32 damage to player")
-
-func _on_attack2_hitbox_area_entered(area: Area2D) -> void:
-	if area.name == "Player_Hurtbox":
-		var p = area.get_parent()
-		if p.has_method("take_damage"):
-			p.take_damage(21)
-			print("Dealt 21 damage to player")
-
-func _on_attack3_hitbox_area_entered(area: Area2D) -> void:
-	if area.name == "Player_Hurtbox":
-		var p = area.get_parent()
-		if p.has_method("take_damage"):
-			p.take_damage(27)
-			print("Dealt 27 damage to player")
 			
 # Health management
 func take_damage(amount: int):
@@ -171,11 +154,12 @@ func take_damage(amount: int):
 		sprite.play("death", true)
 		await show_win_screen()  # await to ensure sequential execution
 
+# Displays execution screen for player
 func show_win_screen() -> void:
 	if win_screen:
 		win_screen.visible = true
 
-
+# Give player damage with hitbox signals
 func _on_attack_1_hitbox_area_entered(area: Area2D) -> void:
 	if area.name == "Player_Hurtbox":
 		var p = area.get_parent()

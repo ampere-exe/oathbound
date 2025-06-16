@@ -1,23 +1,29 @@
 extends CharacterBody2D
 
 # Health Management
-@export var max_health := 100 # Maximum health for the player
-var health := max_health      # Current health for the player
+
+# Maximum health for the player
+@export var max_health := 100 
+# Current health for the player
+var health := max_health      
 
 # Signal emitted when health changes.
 signal health_changed(current_health: int, max_health: int)
 
+# Physics variables
 @export var speed := 200
 @export var jump_force := -400
 @export var gravity := 900
 @export var max_fall_speed := 700
 
+# Attack/Fighting variables
 var is_attacking := false
 var is_blocking := false
-var is_dead := false   # New flag to track if player is dead
+var is_dead := false  
 var can_block_damage := false
 var is_staggered := false
 
+# Sprite and collision variables
 @onready var sprite := $AnimatedSprite2D
 @onready var sword_hitbox := $Sword_Hitbox
 @onready var sword_collision_shape := $Sword_Hitbox/CollisionShape2D
@@ -27,6 +33,7 @@ var is_staggered := false
 
 var sword_collision_shape_offset := Vector2.ZERO
 
+# Connections and initialization
 func _ready():
 	sprite.connect("animation_finished", Callable(self, "_on_animation_finished"))
 	sprite.connect("frame_changed", Callable(self, "_on_frame_changed"))
@@ -37,6 +44,7 @@ func _ready():
 	# Start disabled so it doesn't hit outside attack frames
 	sword_collision_shape.disabled = true
 
+# Give bosses damage if player hitbox enters their hurtbox
 func _on_sword_hitbox_area_entered(area: Area2D) -> void:
 	if area.name == "Thal_Hurtbox" or area.name == "Vhaldir_Hurtbox":
 		var boss = area.get_parent()
@@ -44,12 +52,14 @@ func _on_sword_hitbox_area_entered(area: Area2D) -> void:
 			boss.take_damage(6)
 			print("Hit ", area.name, "- dealt 6 damage")
 
+# Turn off sparks when animation finished
 func _on_spark_animation_finished():
 	spark.visible = false
-	
+
+# User mouse actions 
 func _unhandled_input(event):
 	if is_dead:
-		return  # Ignore input if dead
+		return  
 
 	if Input.is_action_just_pressed("attack"):
 		is_attacking = true
@@ -61,6 +71,7 @@ func _unhandled_input(event):
 		is_attacking = false
 		sprite.play("block", true)
 
+# Physics handling
 func _physics_process(delta):
 	if is_dead:
 		velocity.x = 0
@@ -85,7 +96,7 @@ func _physics_process(delta):
 	move_character(delta)
 	update_animation()
 
-
+# Keyboard input handling
 func handle_input():
 	velocity.x = 0
 	if Input.is_action_pressed("move_right"):
@@ -97,6 +108,7 @@ func handle_input():
 	if is_on_floor() and Input.is_action_just_pressed("jump"):
 		velocity.y = jump_force
 
+# Apply gravity to character
 func apply_gravity(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
@@ -107,6 +119,7 @@ func apply_gravity(delta):
 func move_character(delta):
 	move_and_slide()
 
+# Manage animations
 func update_animation():
 	if is_dead:
 		if sprite.animation != "death":
@@ -145,12 +158,14 @@ func update_animation():
 		if sprite.animation != "idle":
 			sprite.play("idle")
 
+# Flip hitbox when player is facing a certain direction
 func update_sword_hitbox_flip():
 	if sprite.flip_h:
 		sword_collision_shape.position.x = -abs(sword_collision_shape_offset.x)
 	else:
 		sword_collision_shape.position.x = abs(sword_collision_shape_offset.x)
 
+# Set finished animation 
 func _on_animation_finished():
 	if sprite.animation == "attack_1":
 		is_attacking = false
@@ -160,9 +175,9 @@ func _on_animation_finished():
 	elif sprite.animation == "stagger":
 		is_staggered = false
 	elif sprite.animation == "death":
-		# handle death animation finished
 		pass
 
+# Handle hitbox management
 func _on_frame_changed():
 	var frame = sprite.frame
 
@@ -176,28 +191,30 @@ func _on_frame_changed():
 	else:
 		sword_collision_shape.disabled = true
 
-	# Block damage only in the last 2 frames of block animation
+	# Block damage only in the last 3 frames of block animation
 	if sprite.animation == "block":
 		var total_frames = sprite.sprite_frames.get_frame_count("block")
 		can_block_damage = frame >= total_frames - 3
 	else:
 		can_block_damage = false
 
+# Plays spark animation
 func play_spark():
 	spark.visible = true
 	spark.frame = 0
 	spark.play("spark")  
 
+# Handles health changes and taking damage
 func take_damage(amount: int):
 	if can_block_damage:
 		print("Blocked damage!")
 		play_spark()
-		var choice = randi() % 2  # 0 or 1 randomly
+		var choice = randi() % 2  # 0 or 1 randomly for deflection sound
 		if choice == 0:
 			$Deflect1.play()
 		else:
 			$Deflect2.play()
-		return  # No damage if blocking in the last 2 frames
+		return  
 
 	health = max(0, health - amount)
 	print("Player took ", amount, " damage. Current health: ", health)
@@ -215,6 +232,8 @@ func take_damage(amount: int):
 		$Flesh.play()
 		sprite.play("stagger", true)
 		
+
+# Show death screen when player is dead
 func show_death_screen():
 	if death_screen:
 		death_screen.visible = true

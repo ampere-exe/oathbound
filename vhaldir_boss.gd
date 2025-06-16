@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+# Attack and physics var exports
 @export var speed := 150
 @export var jump_force := -300
 @export var gravity := 900
@@ -7,12 +8,14 @@ extends CharacterBody2D
 @export var detection_range := 300
 @export var jump_chance := 0.05
 @export var jump_cooldown_time := 2.0
-@export var max_health := 200
 
+# Health management variables
+@export var max_health := 200
 var health := max_health
 var is_dead := false
 signal health_changed(current_health: int, max_health: int)
 
+# Local physics and attack vars
 var player: Node2D = null
 var is_attacking := false
 var is_jumping_away := false
@@ -21,6 +24,7 @@ var attack_timer := 0.0
 var attacks_left := 0
 var jump_cooldown := 0.0
 
+# Sprite and collision variables
 @onready var sprite := $AnimatedSprite2D
 @onready var area := $Vhaldir_Hurtbox
 @onready var attack1_area := $Attack1_Hitbox
@@ -32,6 +36,7 @@ var jump_cooldown := 0.0
 @onready var hurtbox := $Vhaldir_Hurtbox/CollisionShape2D
 @onready var win_screen := $Winscreen
 
+# Initialization and connections
 func _ready():
 	player = get_tree().get_first_node_in_group("player")
 	randomize()
@@ -46,6 +51,7 @@ func _ready():
 	reset_attack_burst()
 	emit_signal("health_changed", health, max_health)
 
+# Handle boss physics
 func _physics_process(delta):
 	if is_dead or player == null:
 		return
@@ -152,6 +158,7 @@ func _on_frame_changed():
 		attack3_shape.disabled = false
 		$Slash.play()
 
+# Give player damage
 func _on_attack1_hitbox_area_entered(area: Area2D) -> void:
 	if area.name == "Player_Hurtbox":
 		var p = area.get_parent()
@@ -173,6 +180,7 @@ func _on_attack3_hitbox_area_entered(area: Area2D) -> void:
 			p.take_damage(36)
 			print("Boss dealt 36 damage with Attack 3")
 
+# Handle taking damage from player
 func take_damage(amount: int):
 	if is_dead:
 		return
@@ -184,7 +192,8 @@ func take_damage(amount: int):
 		is_dead = true
 		sprite.play("death")
 		show_win_screen()
-		
+
+# Show win screen upon death to player
 func show_win_screen() -> void:
 	if win_screen:
 		win_screen.visible = true

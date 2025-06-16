@@ -514,6 +514,7 @@ frame_progress = 1.0
 [node name="Deflect1" type="AudioStreamPlayer2D" parent="."]
 scale = Vector2(0.555556, 0.555556)
 stream = ExtResource("16_op7ga")
+volume_db = 1.0
 attenuation = 0.0625002
 
 [node name="Deflect2" type="AudioStreamPlayer2D" parent="."]
@@ -523,6 +524,7 @@ attenuation = 0.0384733
 
 [node name="Flesh" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("18_q13i1")
+volume_db = 2.0
 
 [node name="Slash" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("19_pylmc")

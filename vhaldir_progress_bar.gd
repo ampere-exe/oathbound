@@ -1,5 +1,6 @@
 extends TextureProgressBar
 
+# Boss Nodepath
 @export var boss_node_path: NodePath
 
 func _ready():
@@ -8,6 +9,8 @@ func _ready():
 		return
 
 	var boss = get_node_or_null(boss_node_path)
+	
+	# Initialize boss healthbar
 	if boss:
 		boss.health_changed.connect(_on_boss_health_changed)
 		min_value = 0
@@ -16,6 +19,7 @@ func _ready():
 	else:
 		print("Error: Boss node not found at path ", boss_node_path)
 
+# Manage health changes
 func _on_boss_health_changed(current_health: int, max_health: int):
 	min_value = 0
 	max_value = max_health
